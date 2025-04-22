@@ -1,0 +1,13 @@
+log*
+logs/
+SBATCH*
+*.out
+compile*
+srun*
+test*
+inter*
+build/*
+*log*
+*vscode*
+graphs_grammars
+*.txt
