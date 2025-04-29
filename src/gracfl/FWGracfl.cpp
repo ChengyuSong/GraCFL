@@ -1,19 +1,17 @@
 #include <iostream>
-#include "gracfl/BIGracflGraph.hpp"
+#include "gracfl/FWGracfl.hpp"
 
 namespace gracfl 
 {
-
-    BIGracflGraph::BIGracflGraph(std::string& graphfilepath, const Grammar& grammar)
+    FWGracfl::FWGracfl(std::string& graphfilepath, const Grammar& grammar)
     : Graph(graphfilepath, grammar)
     {
         outEdges_.assign(grammar.getLabelSize(), std::vector<BufferEdge>(getNodeSize()));
-        inEdges_.assign(grammar.getLabelSize(), std::vector<BufferEdge>(getNodeSize()));
         hashset_.assign(getNodeSize(), std::vector<std::unordered_set<ull>>(grammar.getLabelSize(), std::unordered_set<ull>()));
         addInitialEdges();
     }
-
-    void  BIGracflGraph::solve(const Grammar& grammar)
+    
+    void  FWGracfl::solve(const Grammar& grammar)
     {
         addAllSelfEdges(grammar); // add epsilon edges
         uint itr = 0;
@@ -26,66 +24,58 @@ namespace gracfl
         } while(!terminate);
     }
 
-    void  BIGracflGraph::singleIteration(const Grammar& grammar, bool& terminate)
+    void  FWGracfl::singleIteration(const Grammar& grammar, bool& terminate)
     {
-        // Derive new edges based on grammar rules
         for (uint g = 0; g < grammar.getLabelSize(); g++)
         {
             for (uint i = 0; i < getNodeSize(); i++)
             {
                 uint nbr;
-                uint START_NEW = inEdges_[g][i].OLD_END;
-                uint END_NEW = inEdges_[g][i].NEW_END;
-                // Process new in-edges labeled g
+                uint START_NEW = outEdges_[g][i].OLD_END;
+                uint END_NEW = outEdges_[g][i].NEW_END;
+
                 for (uint j = START_NEW; j < END_NEW; j++)
                 {
-                    uint inNbr = inEdges_[g][i].vertexList[j];
-
-                    // ------- Rule Type: A = B -------
+                    nbr = outEdges_[g][i].vertexList[j];
                     for (uint m = 0; m < grammar.rule2Index(g).size(); m++)
                     {
                         uint A = grammar.rule2Index(g)[m];
-                        EdgeForReading newEdge(inNbr, i, A);
+                        EdgeForReading newEdge(i, nbr, A);
                         addEdge(newEdge, terminate);
                     }
 
-                    // ------- Rule Type: A = BC -------
                     for (uint m = 0; m < grammar.rule3LeftIndex(g).size(); m++)
                     {
                         uint C = grammar.rule3LeftIndex(g)[m].first;
                         uint A = grammar.rule3LeftIndex(g)[m].second;
 
                         uint START_OLD_OUT = 0;
-                        uint END_NEW_OUT = outEdges_[C][i].NEW_END;
+                        uint END_NEW_OUT = outEdges_[C][nbr].NEW_END;
                         for (uint h = START_OLD_OUT; h < END_NEW_OUT; h++)
                         {
-                            uint nbr = outEdges_[C][i].vertexList[h];
-                            EdgeForReading newEdge(inNbr, nbr, A);
+                            uint outNbr = outEdges_[C][nbr].vertexList[h];
+                            EdgeForReading newEdge(i, outNbr, A);
                             addEdge(newEdge, terminate);
                         }
                     }
                 }
 
-
-                uint START_NEW_OUT = outEdges_[g][i].OLD_END;
-                uint END_NEW_OUT = outEdges_[g][i].NEW_END;
-                // Process new out-edges labeled g
-                for (uint j = START_NEW_OUT; j < END_NEW_OUT; j++)
-                {   
-                    uint nbr = outEdges_[g][i].vertexList[j];
-
-                    // ------- Rule Type 3: A = CB -------
-                    for (uint m = 0; m < grammar.rule3RightIndex(g).size(); m++)
+                uint START_OLD = 0;
+                uint END_OLD = outEdges_[g][i].OLD_END;
+                for (uint j = START_OLD; j < END_OLD; j++)
+                {
+                    nbr = outEdges_[g][i].vertexList[j];
+                    for (uint m = 0; m < grammar.rule3LeftIndex(g).size(); m++)
                     {
-                        uint C = grammar.rule3RightIndex(g)[m].first;
-                        uint A = grammar.rule3RightIndex(g)[m].second;
+                        uint C = grammar.rule3LeftIndex(g)[m].first;
+                        uint A = grammar.rule3LeftIndex(g)[m].second;
 
-                        uint START_OLD_IN = 0;
-                        uint END_OLD_IN = inEdges_[C][i].OLD_END;
-                        for (uint h = START_OLD_IN; h < END_OLD_IN; h++)
+                        uint START_NEW_OUT = outEdges_[C][nbr].OLD_END;
+                        uint END_NEW_OUT = outEdges_[C][nbr].NEW_END;
+                        for (uint h = START_NEW_OUT; h < END_NEW_OUT; h++)
                         {
-                            uint inNbr = inEdges_[C][i].vertexList[h];
-                            EdgeForReading newEdge(inNbr, nbr, A);
+                            uint outNbr = outEdges_[C][nbr].vertexList[h];
+                            EdgeForReading newEdge(i, outNbr, A);
                             addEdge(newEdge, terminate);
                         }
                     }
@@ -93,34 +83,30 @@ namespace gracfl
             }
         }
 
-        // Update sliding pointers for next iteration
+        // ----------------- Update Sliding Pointers -----------------
         for (uint g = 0; g < grammar.getLabelSize(); g++)
         {
             for (int i = 0; i < getNodeSize(); i++)
             {
                 outEdges_[g][i].OLD_END = outEdges_[g][i].NEW_END;
                 outEdges_[g][i].NEW_END = outEdges_[g][i].vertexList.size();
-                inEdges_[g][i].OLD_END = inEdges_[g][i].NEW_END; 
-                inEdges_[g][i].NEW_END = inEdges_[g][i].vertexList.size();
             }
         }
     }
 
-    void BIGracflGraph::addInitialEdges()
+    void FWGracfl::addInitialEdges()
     {
         for (EdgeForReading edge : getEdges())
         {
             hashset_[edge.from][edge.label].insert(edge.to);
             outEdges_[edge.label][edge.from].vertexList.push_back(edge.to);
-            inEdges_[edge.label][edge.to].vertexList.push_back(edge.from);
-
-            // update the sliding pointers
+            
+            // Update NEW_END pointers
             outEdges_[edge.label][edge.from].NEW_END++;
-            inEdges_[edge.label][edge.to].NEW_END++;
         }
     }
 
-    void BIGracflGraph::addAllSelfEdges(const Grammar& grammar)
+    void FWGracfl::addAllSelfEdges(const Grammar& grammar)
     {
         for (int l = 0; l < grammar.getRule1().size(); l++)
         {
@@ -132,29 +118,27 @@ namespace gracfl
         }
     }
 
-    void BIGracflGraph::addSelfEdge(EdgeForReading& edge)
+    void FWGracfl::addSelfEdge(EdgeForReading& edge)
     {
+        // check if the new edge based on an epsilon grammar rule exists or not. l: grammar ID, 0: LHS
         if (hashset_[edge.from][edge.label].find(edge.to) == hashset_[edge.from][edge.label].end())
         {
             hashset_[edge.from][edge.label].insert(edge.to);
             outEdges_[edge.label][edge.from].vertexList.push_back(edge.to);
             outEdges_[edge.label][edge.from].NEW_END++;
-            inEdges_[edge.label][edge.to].vertexList.push_back(edge.from);
-            inEdges_[edge.label][edge.to].NEW_END++;
         }
     }
 
-    void BIGracflGraph::addEdge(EdgeForReading& edge, bool& terminate)
+    void FWGracfl::addEdge(EdgeForReading& edge, bool& terminate) 
     {
         if (hashset_[edge.from][edge.label].find(edge.to) == hashset_[edge.from][edge.label].end()) {
             hashset_[edge.from][edge.label].insert(edge.to);
             outEdges_[edge.label][edge.from].vertexList.push_back(edge.to);
-            inEdges_[edge.label][edge.to].vertexList.push_back(edge.from);
             terminate = false;
         }
     }
 
-    ull BIGracflGraph::countEdge()
+    ull FWGracfl::countEdge()
     {
         return countEdgeHelper(hashset_);
     }

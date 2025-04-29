@@ -7,16 +7,18 @@
 namespace gracfl 
 {
     /**
-     * @class BWGracflGraph
-     * @brief  Backward directional CFL-reachability graph implementation and analysis using grammar-driven travesal and sliding pointers.
+     * @class BIGracfl
+     * @brief  Bidirectional CFL-reachability graph implementation and analysis using grammar-driven travesal and sliding pointers.
      * 
-     * Inherits from Graph and adds support for backward directional edge derivations.
-     * Maintains  in-edges adjacency list, as well as a hashset to avoid duplicates.
+     * Inherits from Graph and adds support for bidirectional edge derivations.
+     * Maintains separate out-edges and in-edges adjacency lists, as well as a hashset to avoid duplicates.
      */
-    class BWGracflGraph : public Graph 
+    class BIGracfl : public Graph
     {
+        /// Adjacency list for outgoing edges: [label][source_vtx].vertexList
+        std::vector<std::vector<BufferEdge>> outEdges_;
         /// Adjacency list for incoming edges: [label][destination_vtx].vertexList
-        std::vector<std::vector<BufferEdge>> inEdges_; 
+        std::vector<std::vector<BufferEdge>> inEdges_;
         /// Duplicate edge-check datastructure: [source][label] -> set of destinations
         std::vector<std::vector<std::unordered_set<ull>>> hashset_;
     public:
@@ -25,7 +27,7 @@ namespace gracfl
          * @param graphfilepath Path to the graph file to load.
          * @param grammar       Grammar describing the CFL rules.
          */
-        BWGracflGraph(std::string& graphfilepath, const Grammar& grammar);
+        BIGracfl(std::string& graphfilepath, const Grammar& grammar);
 
         /**
          * @brief Executes the full bidirectional CFL-reachability analysis.
@@ -41,7 +43,7 @@ namespace gracfl
         void singleIteration(const Grammar& grammar, bool& terminate);
 
         /**
-         * @brief Initializes adjacency list + hashsets with edges from the input graph.
+         * @brief Initializes adjacency lists + hashsets with edges from the input graph.
          */
         void addInitialEdges();
 
@@ -51,24 +53,30 @@ namespace gracfl
          */
         void addAllSelfEdges(const Grammar& grammar);
 
-         /**
+        /**
          * @brief Adds a single self-edge if not already present.
          * @param edge Edge to insert (from, to, label).
          */
         void addSelfEdge(EdgeForReading& edge);
 
-         /**
+        /**
          * @brief Adds a general derived edge if not already present.
          * @param edge  Edge to insert (from, to, label).
          * @param terminate Flag reference, set false if insertion occurs.
          */
         void addEdge(EdgeForReading& edge, bool& terminate);
 
-         /**
+        /**
          * @brief Counts total number of distinct edges in the graph.
          * @returns Total edge count.
          */
         ull countEdge() override;
+
+        /**
+         * @brief Accessor for outgoing-edge adjacency list.
+         * @returns Reference to outEdges_.
+         */
+        inline std::vector<std::vector<BufferEdge>>& getOutEdges() { return outEdges_; }
 
         /**
          * @brief Accessor for incoming-edge adjacency list.

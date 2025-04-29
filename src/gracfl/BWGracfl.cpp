@@ -1,10 +1,10 @@
 #include <iostream>
-#include "gracfl/BWGracflGraph.hpp"
+#include "gracfl/BWGracfl.hpp"
 
 namespace gracfl 
 {
-    // Definition of class BWGracflGraph
-    BWGracflGraph::BWGracflGraph(std::string& graphfilepath, const Grammar& grammar)
+    // Definition of class BWGracfl
+    BWGracfl::BWGracfl(std::string& graphfilepath, const Grammar& grammar)
     : Graph(graphfilepath, grammar)
     {
         inEdges_.assign(grammar.getLabelSize(), std::vector<BufferEdge>(getNodeSize()));
@@ -12,7 +12,7 @@ namespace gracfl
         addInitialEdges();
     }
 
-    void  BWGracflGraph::solve(const Grammar& grammar)
+    void  BWGracfl::solve(const Grammar& grammar)
     {
         addAllSelfEdges(grammar); // add epsilon edges
         uint itr = 0;
@@ -25,7 +25,7 @@ namespace gracfl
         } while(!terminate);
     }
 
-    void  BWGracflGraph::singleIteration(const Grammar& grammar, bool& terminate)
+    void  BWGracfl::singleIteration(const Grammar& grammar, bool& terminate)
     {
         for (uint g = 0; g < grammar.getLabelSize(); g++)
         {
@@ -99,7 +99,7 @@ namespace gracfl
         }
     }
 
-    void BWGracflGraph::addInitialEdges()
+    void BWGracfl::addInitialEdges()
     {
         for (EdgeForReading edge : getEdges())
         {
@@ -110,7 +110,7 @@ namespace gracfl
         }
     }
 
-    void BWGracflGraph::addAllSelfEdges(const Grammar& grammar)
+    void BWGracfl::addAllSelfEdges(const Grammar& grammar)
     {
         for (int l = 0; l < grammar.getRule1().size(); l++)
         {
@@ -122,7 +122,7 @@ namespace gracfl
         }
     }
 
-    void BWGracflGraph::addSelfEdge(EdgeForReading& edge)
+    void BWGracfl::addSelfEdge(EdgeForReading& edge)
     {
         if (hashset_[edge.to][edge.label].find(edge.from) == hashset_[edge.to][edge.label].end())
         {
@@ -132,7 +132,7 @@ namespace gracfl
         }
     }
 
-    void BWGracflGraph::addEdge(EdgeForReading& edge, bool& terminate) 
+    void BWGracfl::addEdge(EdgeForReading& edge, bool& terminate) 
     {
         if (hashset_[edge.to][edge.label].find(edge.from) == hashset_[edge.to][edge.label].end()) {
             hashset_[edge.to][edge.label].insert(edge.from);
@@ -141,7 +141,7 @@ namespace gracfl
         }
     }
 
-    ull BWGracflGraph::countEdge()
+    ull BWGracfl::countEdge()
     {
         return countEdgeHelper(hashset_);
     }

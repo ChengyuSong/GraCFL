@@ -7,30 +7,28 @@
 namespace gracfl 
 {
     /**
-     * @class BIGracflGraph
-     * @brief  Bidirectional CFL-reachability graph implementation and analysis using grammar-driven travesal and sliding pointers.
+     * @class FWGracfl
+     * @brief  Forward directional CFL-reachability graph implementation and analysis using grammar-driven travesal and sliding pointers.
      * 
-     * Inherits from Graph and adds support for bidirectional edge derivations.
-     * Maintains separate out-edges and in-edges adjacency lists, as well as a hashset to avoid duplicates.
+     * Inherits from Graph and adds support for forward directional edge derivations.
+     * Maintains out-edges adjacency list, as well as a hashset to avoid duplicates.
      */
-    class BIGracflGraph : public Graph
+    class FWGracfl : public Graph 
     {
         /// Adjacency list for outgoing edges: [label][source_vtx].vertexList
-        std::vector<std::vector<BufferEdge>> outEdges_;
-        /// Adjacency list for incoming edges: [label][destination_vtx].vertexList
-        std::vector<std::vector<BufferEdge>> inEdges_;
+        std::vector<std::vector<BufferEdge>> outEdges_; 
         /// Duplicate edge-check datastructure: [source][label] -> set of destinations
         std::vector<std::vector<std::unordered_set<ull>>> hashset_;
     public:
         /**
-         * @brief Constructor allocates adjacency lists + hashset, and reads initial edges.
+         * @brief Constructor allocates adjacency list + hashset, and reads initial edges.
          * @param graphfilepath Path to the graph file to load.
          * @param grammar       Grammar describing the CFL rules.
          */
-        BIGracflGraph(std::string& graphfilepath, const Grammar& grammar);
+        FWGracfl(std::string& graphfilepath, const Grammar& grammar);
 
         /**
-         * @brief Executes the full bidirectional CFL-reachability analysis.
+         * @brief Executes the full forward-directional CFL-reachability analysis.
          * @param grammar Grammar rules for generating new edges.
          */
         void solve(const Grammar& grammar) override;
@@ -43,7 +41,7 @@ namespace gracfl
         void singleIteration(const Grammar& grammar, bool& terminate);
 
         /**
-         * @brief Initializes adjacency lists + hashsets with edges from the input graph.
+         * @brief Initializes adjacency list + hashsets with edges from the input graph.
          */
         void addInitialEdges();
 
@@ -77,12 +75,6 @@ namespace gracfl
          * @returns Reference to outEdges_.
          */
         inline std::vector<std::vector<BufferEdge>>& getOutEdges() { return outEdges_; }
-
-        /**
-         * @brief Accessor for incoming-edge adjacency list.
-         * @returns Reference to inEdges_.
-         */
-        inline std::vector<std::vector<BufferEdge>>& getInEdges() { return inEdges_; }
 
         /**
          * @brief Accessor for duplicate-edge-check hashsets.

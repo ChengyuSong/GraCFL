@@ -11,9 +11,9 @@
 #include "utils/Graph.hpp"
 #include "utils/Types.hpp"
 #include "utils/Config.hpp"
-#include "gracfl/BIGracflGraph.hpp"
-#include "gracfl/BWGracflGraph.hpp"
-#include "gracfl/FWGracflGraph.hpp"
+#include "gracfl/BIGracfl.hpp"
+#include "gracfl/BWGracfl.hpp"
+#include "gracfl/FWGracfl.hpp"
 
 
 namespace gracfl

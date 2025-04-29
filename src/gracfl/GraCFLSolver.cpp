@@ -32,15 +32,15 @@ namespace gracfl
         if (config_.model_ == "gracfl") {
             if (config_.mode_ == "serial") {
                 if (config_.direct_ == "fw") {
-                    FWGracflGraph* graph = new FWGracflGraph(config_.graphfile_, *grammar_);
+                    FWGracfl* graph = new FWGracfl(config_.graphfile_, *grammar_);
                     return graph;
                 }
                 else if (config_.direct_ == "bw") {
-                    BWGracflGraph* graph = new BWGracflGraph(config_.graphfile_, *grammar_);
+                    BWGracfl* graph = new BWGracfl(config_.graphfile_, *grammar_);
                     return graph;
                 }
                 else if (config_.direct_ == "bi") {
-                    BIGracflGraph* graph = new BIGracflGraph(config_.graphfile_, *grammar_);
+                    BIGracfl* graph = new BIGracfl(config_.graphfile_, *grammar_);
                     return graph;
                 }                        
             } 
