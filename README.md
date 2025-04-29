@@ -70,7 +70,7 @@ To build the project, follow these steps:
       [--model   <gracfl|base>]   (default: gracfl)
       [--direct  <fw|bw|bi>]      (default: bi)
       [--mode    <serial|parallel>] (default: serial)
-      [--thread  <n>]             (default: 1, or max hardware threads if mode=parallel)
+      [--thread  <n>]             (default: 1, or max available hardware threads if mode=parallel)
    ```
    ### Required Arguments
     - **`--graph`**: Path to the input graph file
