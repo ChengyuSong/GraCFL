@@ -5,6 +5,9 @@
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Build Instructions](#build-instructions)
+- [Running the CFL Reachability Analysis](#running-the-cfl-reachability-analysis)
+- [Example Graph and Grammar](#example-graph-and-grammar)
+- [GraCFL as a Library](#gracfl-as-a-library)
 
 ## Project Overview
 **GraCFL** is designed for high-performance CFL reachability analysis. The project includes various models for performing CFL reachability computations with different optimizations and parallel strategies.
@@ -57,26 +60,153 @@ To build the project, follow these steps:
     ```bash
     make
     ```
-    Executables will be placed in build/bin/
+    Executable named `gracfl` will be placed in build/bin/
 
-5. **Running the executables:**
+## Running the CFL Reachability Analysis
+After building, you can run the generated executables from the `build/bin/` directory as follows:
 
-    After building, you can run the generated executables from the `build/bin/` directory as follows:
-   
-   ```bash
-      ./<executable>
-      --graph   <graphfile>       [REQUIRED]
-      --grammar <grammarfile>     [REQUIRED]
-      [--model   <gracfl|base>]   (default: gracfl)
-      [--direct  <fw|bw|bi>]      (default: bi)
-      [--mode    <serial|parallel>] (default: serial)
-      [--thread  <n>]             (default: 1, or max available hardware threads if mode=parallel)
-   ```
-   ### Required Arguments
-    - **`--graph`**: Path to the input graph file
-    - **`--grammar`**: Path to the grammar file
-   ### Optional Arguments
-    - **`--model`**: Solver model to use (`gracfl` or `base`)
-    - **`--direct`**: Direction of exploration (`fw`, `bw`, or `bi`)
-    - **`--mode`** Execution mode (`serial` or `parallel`)
-    - **`--thread` Number of threads (if omitted in parallel mode, uses all available cores)
+### First Create your ConfigGraCFL file
+
+Place a plain-text file named  `ConfigGraCFL` (no extension) alongside the executable (i.e. in `build/bin/`) with one `key = value` per line:
+
+```text
+# Required inputs:
+graphFilepath    = /home/user/data/graph.txt
+grammarFilepath  = /home/user/data/grammar.txt
+
+# Optional settings (defaults shown):
+executionMode      = serial           # serial or parallel (default: serial)
+traversalDirection = bi               # fw, bw, or bi (default: bi if serial or fw if parallel)
+processingStrategy = gram-driven      # gram-driven or topo-driven (default: gram-driven)
+numThreads         = 32               # positive integer, only used if parallel (default: all available cores)
+```
+
+### Then Run the Following Command
+
+```bash
+./gracfl
+```
+
+Note: The `ConfigGraCFL` file and the executable `gracfl` need to be in the same directory.
+
+## Example Graph and Grammar
+
+To help you get started, here’s a minimal example of an input graph and a normalized (Chomsky Normal Form) grammar for CFL reachability.
+
+### Sample Graph (`sample_graph.txt`)
+
+Each line is a directed, labeled edge in the format: `src dst label`
+```text
+0 1 a
+1 2 b
+2 3 a
+3 4 b
+```
+
+### Sample Normalized Grammar (sample_grammar.txt)
+Each line represents a production rule in the grammar. A rule of type `A = BC` is written in this format `A    B    C`
+```
+A                   # epsilon rule creates self edges
+A    a              # unary rule
+B    b              # unary rule
+S    A    B         # binary rule 
+```
+
+## GraCFL as a Library
+1. Clone into your project
+    In your external project’s root directory:
+    ```text
+    https://github.com/AutomataLab/GraCFL.git
+    ```
+2. CMake configuration
+    In your `CMakeLists.txt`, add GraCFL as a subdirectory and link against its static library:
+    ```cmake
+    # Add the GraCFL library as a subdirectory
+    add_subdirectory(GraCFL)
+    ```
+    ```cmake
+    # Link against the static library
+    target_link_libraries(run_graCFL PRIVATE graCFLlib)
+    ```
+
+    An Example `CMakeLists.txt` of an external project that uses GraCFL as a library
+    ```cmake
+    cmake_minimum_required(VERSION 3.15)
+    project(ExternalGraCFLUser)
+    
+    # Add the GraCFL library as a subdirectory
+    add_subdirectory(GraCFL)
+  
+    # Other configurations in your CMakeLists.txt
+     
+    # Build your executable
+    add_executable(ExternalGraCFLUserExecutable main.cpp)
+    
+    # Link against the static library
+    target_link_libraries(run_graCFL PRIVATE graCFLlib)
+    ```
+    
+3. Sample usage in code
+
+    ```cpp
+    // include this header if you want to print the exception message
+    #include <iostream>
+    #include <vector>
+    #include <unordered_set>
+    
+    // As the function throws error, we need to include the stdexcept header
+    #include <stdexcept>
+    
+    /*
+    * include this two headers to use the GraCFL api
+    */
+    #include "solvers/Solver.hpp"
+    #include "utils/Config.hpp"
+    
+    /*
+    * @brief Example function demonstrating the usage of the GraCFL api.
+    * 
+    * This function initializes a configuration object, creates a Solver instance,
+    * and executes the CFL-reachability analysis. It handles exceptions and prints
+    * usage instructions in case of errors.
+    * Note: The function name 'example' is just a placeholder and can be changed as needed.
+    * The code snippet below can be added to a larger program or used as a standalone example.
+    * It is assumed that the necessary headers and namespaces are included at the beginning of the file.
+    */      
+    void example() {
+        try {
+            // Create a configuration object
+            gracfl::Config config;
+            // Set the configuration parameters
+    
+            // graphFilepath and grammarFilepath are required parameters
+            config.graphFilepath = "path/to/graph.edgelist";
+            config.grammarFilepath = "path/to/grammar.cfg";
+    
+            // Optional parameters
+            config.executionMode = "parallel"; // or "serial"
+            config.traversalDirection = "fw"; // or "bw" or "bi"
+            config.processingStrategy = "gram-driven"; // or "topo-driven"
+            config.numThreads = 32; // Number of threads for parallel execution
+    
+            // Print the configuration settings
+            config.printConfigs();
+            // Create a Solver instance with the configuration
+            gracfl::Solver* solver = new gracfl::Solver(config);
+            // Execute the CFL-reachability analysis
+            solver->solve();
+            // Retrieve the CFL-reachability graph:
+            // outputCFLGraph[node][label] is the set of all reachable destination node IDs from the source node with the edge label.
+            std::vector<std::vector<std::unordered_set<ull>>> outputCFLGraph = solver->getGraph();
+            // Clean up the solver instance
+            delete solver;
+        } catch (const std::exception& e) {
+            // Handle exceptions and print error messages
+            std::cerr << "Error: " << e.what() << "\n\n";
+            // Print usage instructions for the GraCFL API
+            gracfl::Config::printUsage("example");
+        }
+    }
+    ```
+
+
