@@ -116,8 +116,15 @@ Each line represents a production rule in the grammar. A rule of type `A = BC` i
 A                   # epsilon rule creates self edges
 A    a              # unary rule
 B    b              # unary rule
-S    A    B         # binary rule 
+S    A    B         # binary rule
 ```
+
+## Benchmark Graphs and Grammar Files
+
+The benchmark graphs and grammar files used in the research paper are sourced from the Graspan project and are available for download. These files are necessary to reproduce the experiments and results described in the paper. You can download them from the following Google Drive link:
+
+[Download Benchmark Graphs and Grammar Files](https://drive.google.com/drive/folders/1mLMhuXbj4Eu9xrhFcQs3uH3Lp0lw0iZ8?usp=sharing)
+
 
 ## GraCFL as a Library
 1. Clone into your project
