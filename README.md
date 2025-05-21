@@ -10,7 +10,7 @@
 - [GraCFL as a Library](#gracfl-as-a-library)
 
 ## Project Overview
-**GraCFL** is designed for high-performance CFL reachability analysis. The project includes various models for performing CFL reachability computations with different optimizations and parallel strategies.
+**GraCFL** is a vertex-centric graph system for solving CFL reachability analysis. The project includes multiple vertex-centric models for performing CFL reachability computations with different optimizations and parallel strategies.
 
 ## Dependencies
 The project depends on the following libraries and tools:
@@ -19,7 +19,7 @@ The project depends on the following libraries and tools:
 - **C++11 or higher** (supported by the project)
 - **TBB** (Threading Building Blocks)
 - **jemalloc** (for memory allocation)
-- **OpenMP** (optional for parallelism)
+- **OpenMP** (for parallelism)
 
 The project automatically fetches and builds the necessary dependencies if they are not found on the system.
 
