@@ -50,6 +50,18 @@ namespace gracfl {
     TemporalVectorConcurrent() {}
   };
 
+
+  struct TemporalVectorConcurrentWithLbldVtx
+  {
+    uint OLD_END = 0;
+    uint NEW_END = 0;
+
+    tbb::concurrent_vector<LbldVtx> vertexList;
+    int srcV = -1;
+
+    TemporalVectorConcurrentWithLbldVtx() {}
+  };
+
   /**
    * @brief Represents a directed edge with source, destination and grammar label.
    */

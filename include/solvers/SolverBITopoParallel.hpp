@@ -1,7 +1,7 @@
 #pragma once
 
 #include "utils/graphs/Graph.hpp"
-#include "utils/graphs/Graph3DBiConcurrent.hpp"
+#include "utils/graphs/Graph2DBiConcurrent.hpp"
 #include "utils/Edges.hpp"
 #include "utils/Types.hpp"
 #include "utils/Config.hpp"
@@ -11,36 +11,36 @@
 namespace gracfl 
 {
     /**
-     * @class SolverBIGramParallel
-     * @brief Bidirectional grammar-driven parallel solver.
+     * @class SolverBITopoParallel
+     * @brief Bidirectional topology-driven parallel solver for CFL reachability analysis.
      *
-     * This solver operates on a Graph3DBiConcurrent structure and uses grammar rules to perform
-     * context-free language reachability analysis in both forward and backward directions.
+     * This solver uses a topological strategy to process edges over a 2D bidirectional graph (Graph2DBiConcurrent).
+     * It is efficient for grammars where topological traversal of labeled nodes improves convergence speed.
      */
-    class SolverBIGramParallel : public SolverBase
+    class SolverBITopoParallel : public SolverBase
     {
-        Grammar& grammar_; ///< Reference to the grammar rules used for CFL parsing.
-        Graph3DBiConcurrent* graph_; ///< Pointer to the bidirectional graph structure.
+        Grammar& grammar_;  ///< Reference to the grammar used for parsing and derivation.
+        Graph2DBiConcurrent* graph_;  ///< Pointer to the bidirectional 2D graph structure.
         uint numOfThreads_;
     public:
         /**
-         * @brief Constructor for SolverBIGramParallel.
+         * @brief Constructor for SolverBITopoParallel.
          * @param graphfilepath Path to the input graph file.
-         * @param grammar Reference to the Grammar object.
+         * @param grammar Reference to the Grammar object used for CFL derivations.
          */
-        SolverBIGramParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
+        SolverBITopoParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
 
         /**
          * @brief Destructor.
          */
-        ~SolverBIGramParallel();
+        ~SolverBITopoParallel();
 
         /**
-         * @brief Executes the main CFL solving loop until convergence.
+         * @brief Executes the CFL solver loop until convergence is achieved.
          */
         void runCFL() override;
 
-        /**
+       /**
          * @brief Runs a single iteration of the CFL solving process.
          *
          * Applies production rules using both incoming and outgoing edges to perform updates
@@ -56,27 +56,22 @@ namespace gracfl
          * @param nodeSize Total number of nodes/vertex in the graph.
          * @param terminate Flag indicating whether convergence has been reached.
          */
-
         void runSingleIterationParallel(
-            std::vector<std::vector<TemporalVectorConcurrent>>& outEdges,
-            std::vector<std::vector<TemporalVectorConcurrent>>& inEdges,
+            std::vector<TemporalVectorConcurrentWithLbldVtx>& outEdges,
+            std::vector<TemporalVectorConcurrentWithLbldVtx>& inEdges,
             std::vector<std::vector<tbb::concurrent_unordered_set<ull>>>& hashset,
             std::vector<std::vector<uint>>& grammar2index,
-            std::vector<std::vector<std::pair<uint, uint>>>& grammar3indexLeft,
-            std::vector<std::vector<std::pair<uint, uint>>>& grammar3indexRight,
+            std::vector<std::vector<uint>>& grammar3index,
             uint labelSize,
             uint nodeSize,
             bool& terminate);
 
-        /**
+         /**
          * @brief Adds self-loop epsilon edges to support epsilon productions.
          */
         void addSelfEdges();
 
-        /**
-         * @brief Returns the graph's final CFL-reachable edges.
-         * @return Graph hashset (node × label → reachable destination node set).
-         */
+        
         std::vector<std::vector<std::unordered_set<ull>>> getGraph() override;
 
         /**

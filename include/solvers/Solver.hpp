@@ -24,6 +24,7 @@
 #include "solvers/SolverBWGramParallel.hpp"
 #include "solvers/SolverBWTopoParallel.hpp"
 #include "solvers/SolverBIGramParallel.hpp"
+#include "solvers/SolverBITopoParallel.hpp"
 #include "solvers/SolverBase.hpp"
 
 

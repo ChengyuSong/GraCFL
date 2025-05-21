@@ -32,6 +32,7 @@ namespace gracfl
     : grammar_(grammar)
     , graph_(new Graph3DBiConcurrent(graphfilepath, grammar))
     {
+        numOfThreads_ = numOfThreads;
     }
 
     SolverBIGramParallel::~SolverBIGramParallel()

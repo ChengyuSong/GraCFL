@@ -66,9 +66,9 @@ namespace gracfl
                 if (config_.processingStrategy == "gram-driven") {
                     return new SolverBIGramParallel(config_.graphFilepath, *grammar_, config_.numThreads);
                 } 
-                // else if (config_.processingStrategy == "topo-driven") {
-                //     return new SolverBWTopoParallel(config_.graphFilepath, *grammar_, config_.numThreads);
-                // }
+                else if (config_.processingStrategy == "topo-driven") {
+                    return new SolverBITopoParallel(config_.graphFilepath, *grammar_, config_.numThreads);
+                }
             }
         }
         return nullptr;

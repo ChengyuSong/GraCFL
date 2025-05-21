@@ -2,6 +2,7 @@
 
 #include "../Edges.hpp"
 #include "../Grammar.hpp"
+#include "tbb/concurrent_unordered_set.h"
 
 // Graph.hpp
 namespace gracfl {
@@ -21,6 +22,7 @@ namespace gracfl {
         virtual ~Graph() = default;
         void loadGraphFile(std::string& graphfilepath, const Grammar& grammar);
         ull countEdgeHelper(std::vector<std::vector<std::unordered_set<ull>>>& hashset);
+        ull countEdgeHelperConcurrent(std::vector<std::vector<tbb::concurrent_unordered_set<ull>>>& hashset);
 
         /**
          * @brief Get the number of nodes.

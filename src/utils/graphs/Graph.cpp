@@ -47,4 +47,17 @@ namespace gracfl {
         }
         return size;
     }
+
+    ull Graph::countEdgeHelperConcurrent(std::vector<std::vector<tbb::concurrent_unordered_set<ull>>>& hashset)
+    {
+        ull size = 0;
+        for (uint i = 0; i < hashset.size(); i++)
+        {
+            for (uint j = 0; j < hashset[i].size(); j++)
+            {
+                size += hashset[i][j].size();
+            }
+        }
+        return size;
+    }
 }
