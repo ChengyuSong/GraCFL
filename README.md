@@ -81,6 +81,13 @@ processingStrategy = gram-driven      # gram-driven or topo-driven (default: gra
 numThreads         = 32               # positive integer, only used if parallel (default: all available cores)
 ```
 
+### For stable parallel runs
+Before invoking the executable in parallel mode, export these OpenMP settings to improve thread binding and reduce spin‐wait overhead:
+```bash
+export OMP_PROC_BIND=true
+export OMP_WAIT_POLICY=ACTIVE
+```
+
 ### Then Run the Following Command
 
 ```bash
