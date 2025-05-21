@@ -7,6 +7,7 @@
 - [Build Instructions](#build-instructions)
 - [Running the CFL Reachability Analysis](#running-the-cfl-reachability-analysis)
 - [Example Graph and Grammar](#example-graph-and-grammar)
+- [Benchmark Graphs and Grammar Files](#benchmark-graphs-and-grammar-files)
 - [GraCFL as a Library](#gracfl-as-a-library)
 
 ## Project Overview
