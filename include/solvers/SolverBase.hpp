@@ -63,15 +63,19 @@ namespace gracfl
          * @return A 2D vector representing outgoing edges: node × label → {destination nodes}.
          */
         std::vector<std::vector<std::unordered_set<ull>>> convertInHashsetToOutHashset(
-            std::vector<std::vector<std::unordered_set<ull>>>& inHashset
+            std::vector<std::vector<std::unordered_set<ull>>>& inHashset,
+            uint nodeSize
         )
         {
+            // Initialize outHashset with proper dimensions using the provided nodeSize
             std::vector<std::vector<std::unordered_set<ull>>> outHashset(inHashset.size());
             for (uint i = 0; i < inHashset.size(); i++)
             {
-                outHashset[i].resize(inHashset[i].size());
+                // Size each node's vector to accommodate all possible node IDs
+                outHashset[i].resize(nodeSize);
             }
 
+            // Populate the output hashset
             for (uint i = 0; i < inHashset.size(); i++)
             {
                 for (uint j = 0; j < inHashset[i].size(); j++)

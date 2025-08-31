@@ -67,7 +67,7 @@ namespace gracfl
         void addSelfEdges();
 
         std::vector<std::vector<std::unordered_set<ull>>> getGraph() override { 
-            std::vector<std::vector<std::unordered_set<ull>>> outHashset = convertInHashsetToOutHashset(graph_->getInHashset());
+            std::vector<std::vector<std::unordered_set<ull>>> outHashset = convertInHashsetToOutHashset(graph_->getInHashset(), graph_->getNodeSize());
             return outHashset; 
         }
 
