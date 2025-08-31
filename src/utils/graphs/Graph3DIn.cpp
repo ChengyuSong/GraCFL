@@ -8,6 +8,13 @@ namespace gracfl {
         addInitialEdges();
     }
 
+    Graph3DIn::Graph3DIn(std::vector<Edge>& edges, const Grammar& grammar)
+        : Graph(edges, grammar) 
+    {
+        initContainers();
+        addInitialEdges();
+    }
+
     void Graph3DIn::initContainers()
     {
         inEdges_.assign(getNodeSize(), std::vector<TemporalVector>(getLabelSize()));

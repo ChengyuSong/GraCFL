@@ -8,6 +8,13 @@ namespace gracfl {
         addInitialEdges();
     }
 
+    Graph2DBi::Graph2DBi(std::vector<Edge>& edges, const Grammar& grammar)
+        : Graph(edges, grammar) 
+    {
+        initContainers();
+        addInitialEdges();
+    }
+
     void Graph2DBi::initContainers()
     {
         outEdges_.assign(getNodeSize(), TemporalVectorWithLbldVtx());

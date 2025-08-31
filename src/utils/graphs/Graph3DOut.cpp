@@ -7,6 +7,13 @@ namespace gracfl {
         initContainers();
         addInitialEdges();
     }
+
+    Graph3DOut::Graph3DOut(std::vector<Edge>& edges, const Grammar& grammar)
+        : Graph(edges, grammar) 
+    {
+        initContainers();
+        addInitialEdges();
+    }
     
     void Graph3DOut::initContainers()
     {

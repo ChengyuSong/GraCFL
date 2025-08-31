@@ -30,6 +30,13 @@ namespace gracfl {
         Graph2DBi(std::string& graphfilepath, const Grammar& grammar);
 
         /**
+         * @brief Constructs a Graph2DBi object from a vector of edges.
+         * @param edges Reference to the vector of edges to be loaded.
+         * @param grammar Reference to the grammar object for labeled edge interpretation.
+         */
+        Graph2DBi(std::vector<Edge>& edges, const Grammar& grammar);
+
+        /**
          * @brief Initializes internal containers for graph data.
          */
         void initContainers();

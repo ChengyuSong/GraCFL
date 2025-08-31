@@ -10,6 +10,12 @@ namespace gracfl {
         loadGraphFile(graphfilepath, grammar);
     }
 
+    Graph::Graph(std::vector<Edge>& edges, const Grammar& grammar)
+    {
+        numLabels_ = grammar.getLabelSize();
+        loadEdges(edges, grammar);
+    }
+
     void Graph::loadGraphFile(std::string& graphfilepath, const Grammar& grammar)
     {
         Edge newEdge;
@@ -33,6 +39,22 @@ namespace gracfl {
             numEdges_++;
         }
         infile.close();
+    }
+
+    void Graph::loadEdges(std::vector<Edge>& edges, const Grammar& grammar)
+    {
+        for (const Edge& edge : edges)
+        {
+            // Validate that the label ID is valid in the grammar
+            if (edge.label >= grammar.getLabelSize())
+            {
+                continue;
+            }
+
+            edges_.push_back(edge);
+            numNodes_ = std::max(numNodes_, std::max(edge.from + 1, edge.to + 1));
+            numEdges_++;
+        }
     }
 
     ull Graph::countEdgeHelper(std::vector<std::vector<std::unordered_set<ull>>>& hashset)

@@ -8,6 +8,13 @@ namespace gracfl {
         addInitialEdges();
     }
 
+    Graph2DIn::Graph2DIn(std::vector<Edge>& edges, const Grammar& grammar)
+        : Graph(edges, grammar) 
+    {
+        initContainers();
+        addInitialEdges();
+    }
+
     void Graph2DIn::initContainers()
     {
         inEdges_.assign(getNodeSize(), TemporalVectorWithLbldVtx());

@@ -8,6 +8,13 @@ namespace gracfl {
         addInitialEdges();
     }
 
+    Graph2DBiConcurrent::Graph2DBiConcurrent(std::vector<Edge>& edges, const Grammar& grammar)
+        : Graph(edges, grammar) 
+    {
+        initContainers();
+        addInitialEdges();
+    }
+
     void Graph2DBiConcurrent::initContainers()
     {
         outEdges_.assign(getNodeSize(), TemporalVectorConcurrentWithLbldVtx());

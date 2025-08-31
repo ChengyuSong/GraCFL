@@ -22,6 +22,7 @@ namespace gracfl {
         std::vector<std::vector<std::unordered_set<ull>>> inHashset_;
         
         Graph2DIn(std::string& graphfilepath, const Grammar& grammar);
+        Graph2DIn(std::vector<Edge>& edges, const Grammar& grammar);
         void initContainers();
         void addInitialEdges();
         void clearContainers();
