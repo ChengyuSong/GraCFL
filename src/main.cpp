@@ -8,6 +8,7 @@ int main(int argc, char* argv[]) {
         gracfl::Config config("ConfigGraCFL");
         config.printConfigs();
         gracfl::Solver* solver = new gracfl::Solver(config);
+        solver->printLabelIDToSymbolMap();
         solver->solve();
         delete solver;
     } catch (const std::exception& e) {

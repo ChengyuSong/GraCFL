@@ -77,5 +77,16 @@ namespace gracfl
          *         and the second index is the label ID. Each unordered set contains the reachable vertex IDs.
          */
         std::vector<std::vector<std::unordered_set<ull>>> getGraph();
+
+        /**
+         * @brief Get the mapping from label IDs to strings.
+         * @return The ID-to-symbol map.
+         */
+        std::unordered_map<uint, std::string> getLabelIDToSymbolMap() const;
+
+        /**
+         * @brief Print the mapping from label IDs to strings.
+         */
+        void printLabelIDToSymbolMap() const;
     };
 }

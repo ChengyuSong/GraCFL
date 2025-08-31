@@ -2,6 +2,7 @@
 #include <chrono>     
 #include <stdexcept>  
 #include <string> 
+#include <map> 
 #include "solvers/Solver.hpp"
 
 namespace gracfl
@@ -107,5 +108,28 @@ namespace gracfl
     std::vector<std::vector<std::unordered_set<ull>>> Solver::getGraph()
     {
         return solver_->getGraph();
+    }
+
+    std::unordered_map<uint, std::string> Solver::getLabelIDToSymbolMap() const
+    {
+        return grammar_->getIDToSymbolMap();
+    }
+
+    void Solver::printLabelIDToSymbolMap() const
+    {
+        std::cout << "---------------------------------------" << std::endl;
+        std::cout << "------- Label ID To Symbol Map --------" << std::endl;
+        std::cout << "---------------------------------------" << std::endl;
+
+        const auto& idToSymbolMap = grammar_->getIDToSymbolMap();
+
+        // copy into an ordered std::map
+        std::map<uint, std::string> sortedMap(idToSymbolMap.begin(), idToSymbolMap.end());
+
+        for (const auto& kv : sortedMap) {
+            std::cout << kv.first << "\t->\t" << kv.second << '\n';
+        }
+
+        std::cout<<"\n";
     }
 }
