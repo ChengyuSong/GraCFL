@@ -9,6 +9,7 @@
 - [Example Graph and Grammar](#example-graph-and-grammar)
 - [Benchmark Graphs and Grammar Files](#benchmark-graphs-and-grammar-files)
 - [GraCFL as a Library](#gracfl-as-a-library)
+- [Citation](#citation)
 
 ## Project Overview
 **GraCFL** is a vertex-centric graph system for solving CFL reachability analysis. The project includes multiple vertex-centric models for performing CFL reachability computations with different optimizations and parallel strategies.
