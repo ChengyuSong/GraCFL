@@ -226,7 +226,7 @@ The benchmark graphs and grammar files used in the research paper are sourced fr
 
 ## Citation
 
-If you use **GraCFL** in your research, please cite our paper:
+If you use **GraCFL** in your research, please cite [our paper](https://doi.org/10.1145/3721145.3725762):
 
 ```bibtex
 
