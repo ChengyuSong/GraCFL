@@ -29,6 +29,7 @@ namespace gracfl
          * @param grammar Reference to the Grammar object used for CFL derivations.
          */
         SolverFWTopo(std::string graphfilepath, Grammar& grammar);
+        SolverFWTopo(std::vector<Edge>& edges, Grammar& grammar);
         /**
          * @brief Destructor.
          */

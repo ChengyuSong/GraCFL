@@ -10,6 +10,12 @@ namespace gracfl
         numOfThreads_ = numOfThreads;
     }
 
+    SolverFWTopoParallel::SolverFWTopoParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads)
+    : SolverFWTopo(edges, grammar)
+    {
+        numOfThreads_ = numOfThreads;
+    }
+
     void SolverFWTopoParallel::runCFL()
     {
         uint itr = 0;

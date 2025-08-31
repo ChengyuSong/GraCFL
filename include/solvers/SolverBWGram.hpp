@@ -26,6 +26,7 @@ namespace gracfl
     public:
        
         SolverBWGram(std::string graphfilepath, Grammar& grammar);
+        SolverBWGram(std::vector<Edge>& edges, Grammar& grammar);
         ~SolverBWGram();
 
         void runCFL() override;

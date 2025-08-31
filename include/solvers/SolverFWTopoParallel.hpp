@@ -32,6 +32,7 @@ namespace gracfl
          * @param numOfThreads Number of OpenMP threads to use during parallel execution.
          */
         SolverFWTopoParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
+        SolverFWTopoParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads);
 
         /**
          * @brief Executes the full parallel forward-directional CFL-reachability analysis.

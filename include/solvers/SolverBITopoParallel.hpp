@@ -29,6 +29,7 @@ namespace gracfl
          * @param grammar Reference to the Grammar object used for CFL derivations.
          */
         SolverBITopoParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
+        SolverBITopoParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads);
 
         /**
          * @brief Destructor.

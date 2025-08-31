@@ -35,6 +35,13 @@ namespace gracfl
         numOfThreads_ = numOfThreads;
     }
 
+    SolverBIGramParallel::SolverBIGramParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads)
+    : grammar_(grammar)
+    , graph_(new Graph3DBiConcurrent(edges, grammar))
+    {
+        numOfThreads_ = numOfThreads;
+    }
+
     SolverBIGramParallel::~SolverBIGramParallel()
     {
         delete graph_;

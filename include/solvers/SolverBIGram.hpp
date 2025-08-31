@@ -30,6 +30,13 @@ namespace gracfl
         SolverBIGram(std::string graphfilepath, Grammar& grammar);
 
         /**
+         * @brief Constructor for SolverBIGram.
+         * @param edges Vector of edges to initialize the graph.
+         * @param grammar Reference to the Grammar object.
+         */
+        SolverBIGram(std::vector<Edge>& edges, Grammar& grammar);
+
+        /**
          * @brief Destructor.
          */
         ~SolverBIGram();

@@ -30,6 +30,13 @@ namespace gracfl
         SolverBITopo(std::string graphfilepath, Grammar& grammar);
 
         /**
+         * @brief Constructor for SolverBITopo from edges.
+         * @param edges Vector of edges to initialize the graph.
+         * @param grammar Reference to the Grammar object used for CFL derivations.
+         */
+        SolverBITopo(std::vector<Edge>& edges, Grammar& grammar);
+
+        /**
          * @brief Destructor.
          */
         ~SolverBITopo();

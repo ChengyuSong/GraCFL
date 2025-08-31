@@ -29,6 +29,7 @@ namespace gracfl
          * @param grammar Reference to the Grammar object for rule processing.
          */
         SolverBWTopo(std::string graphfilepath, Grammar& grammar);
+        SolverBWTopo(std::vector<Edge>& edges, Grammar& grammar);
 
         /**
          * @brief Destructor.

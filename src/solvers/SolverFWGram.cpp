@@ -9,6 +9,12 @@ namespace gracfl
     {
     }
 
+    SolverFWGram::SolverFWGram(std::vector<Edge>& edges, Grammar& grammar)
+    : grammar_(grammar)
+    , graph_(new Graph3DOut(edges, grammar))
+    {
+    }
+
     SolverFWGram::~SolverFWGram()
     {
         delete graph_;

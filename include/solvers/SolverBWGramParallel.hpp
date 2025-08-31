@@ -29,6 +29,7 @@ namespace gracfl
          * @param numOfThreads Number of threads to use in parallel execution.
          */
         SolverBWGramParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
+        SolverBWGramParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads);
 
         /**
          * @brief Executes the CFL solver until convergence is achieved.

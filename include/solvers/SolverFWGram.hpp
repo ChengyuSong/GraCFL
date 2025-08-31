@@ -34,6 +34,14 @@ namespace gracfl
         SolverFWGram(std::string graphfilepath, Grammar& grammar);
 
         /**
+         * @brief Constructs a SolverFWGram instance from edges.
+         * 
+         * @param edges Vector of edges to initialize the graph.
+         * @param grammar Reference to the Grammar object for rule-based traversal.
+         */
+        SolverFWGram(std::vector<Edge>& edges, Grammar& grammar);
+
+        /**
          * @brief Destructor for SolverFWGram.
          * 
          * Cleans up dynamically allocated graph memory.

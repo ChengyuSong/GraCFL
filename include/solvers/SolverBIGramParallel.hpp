@@ -29,6 +29,7 @@ namespace gracfl
          * @param grammar Reference to the Grammar object.
          */
         SolverBIGramParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
+        SolverBIGramParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads);
 
         /**
          * @brief Destructor.

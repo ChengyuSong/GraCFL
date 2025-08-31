@@ -9,6 +9,12 @@ namespace gracfl
     {
     }
 
+    SolverBWTopo::SolverBWTopo(std::vector<Edge>& edges, Grammar& grammar)
+    : grammar_(grammar)
+    , graph_(new Graph2DIn(edges, grammar))
+    {
+    }
+
     SolverBWTopo::~SolverBWTopo()
     {
         delete graph_;

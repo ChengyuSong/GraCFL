@@ -32,6 +32,7 @@ namespace gracfl
          * @param numOfThreads Number of OpenMP threads to use during parallel execution.
          */
         SolverBWTopoParallel(std::string graphfilepath, Grammar& grammar, uint numOfThreads);
+        SolverBWTopoParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads);
 
         /**
          * @brief Executes the full CFL reachability algorithm in parallel.

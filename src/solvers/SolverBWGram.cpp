@@ -9,6 +9,12 @@ namespace gracfl
     {
     }
 
+    SolverBWGram::SolverBWGram(std::vector<Edge>& edges, Grammar& grammar)
+    : grammar_(grammar)
+    , graph_(new Graph3DIn(edges, grammar))
+    {
+    }
+
     SolverBWGram::~SolverBWGram()
     {
         delete graph_;

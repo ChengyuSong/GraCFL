@@ -10,6 +10,12 @@ namespace gracfl
     {
     }
 
+    SolverFWTopo::SolverFWTopo(std::vector<Edge>& edges, Grammar& grammar)
+        : grammar_(grammar)
+        , graph_(new Graph2DOut(edges, grammar))
+    {
+    }
+
     SolverFWTopo::~SolverFWTopo()
     {
         delete graph_;

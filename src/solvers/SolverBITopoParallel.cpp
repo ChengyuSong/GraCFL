@@ -34,6 +34,13 @@ namespace gracfl
         numOfThreads_ = numOfThreads;
     }
 
+    SolverBITopoParallel::SolverBITopoParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads)
+    : grammar_(grammar)
+    , graph_(new Graph2DBiConcurrent(edges, grammar))
+    {
+        numOfThreads_ = numOfThreads;
+    }
+
     SolverBITopoParallel::~SolverBITopoParallel()
     {
         delete graph_;

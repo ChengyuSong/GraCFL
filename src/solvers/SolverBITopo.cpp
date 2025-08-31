@@ -9,6 +9,12 @@ namespace gracfl
     {
     }
 
+    SolverBITopo::SolverBITopo(std::vector<Edge>& edges, Grammar& grammar)
+    : grammar_(grammar)
+    , graph_(new Graph2DBi(edges, grammar))
+    {
+    }
+
     SolverBITopo::~SolverBITopo()
     {
         delete graph_;

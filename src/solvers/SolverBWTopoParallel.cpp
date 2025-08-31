@@ -10,6 +10,12 @@ namespace gracfl
         numOfThreads_ = numOfThreads;
     }
 
+    SolverBWTopoParallel::SolverBWTopoParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads)
+    : SolverBWTopo(edges, grammar)
+    {
+        numOfThreads_ = numOfThreads;
+    }
+
     void SolverBWTopoParallel::runCFL()
     {
         uint itr = 0;

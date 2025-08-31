@@ -9,6 +9,12 @@ namespace gracfl
         numOfThreads_ = numOfThreads;
     }
 
+    SolverBWGramParallel::SolverBWGramParallel(std::vector<Edge>& edges, Grammar& grammar, uint numOfThreads)
+    : SolverBWGram(edges, grammar)
+    {
+        numOfThreads_ = numOfThreads;
+    }
+
     void  SolverBWGramParallel::runCFL()
     { 
         uint itr = 0;
