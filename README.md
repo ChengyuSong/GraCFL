@@ -224,4 +224,25 @@ The benchmark graphs and grammar files used in the research paper are sourced fr
     }
     ```
 
+## Citation
+
+If you use **GraCFL** in your research, please cite our paper:
+
+```bibtex
+
+@inproceedings{10.1145/3721145.3725762,
+    author = {Fuad, Sakib and Sabet, Amir Hossein Nodehi and Farooq, Umar and Zhao, Zhijia},
+    title = {GraCFL: A Holistically Designed Vertex-Centric Graph System for CFL Reachability},
+    year = {2025},
+    isbn = {9798400715372},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3721145.3725762},
+    doi = {10.1145/3721145.3725762},
+    booktitle = {Proceedings of the 39th ACM International Conference on Supercomputing},
+    pages = {1131–1145},
+    numpages = {15},
+    series = {ICS '25}
+}
+```
 
