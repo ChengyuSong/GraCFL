@@ -88,5 +88,10 @@ namespace gracfl
          * @brief Print the mapping from label IDs to strings.
          */
         void printLabelIDToSymbolMap() const;
+
+        const std::unordered_map<uint,std::string>& getGrammarMap() const
+        {
+            return grammar_->getIDToSymbolMap();
+        }
     };
 }

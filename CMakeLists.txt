@@ -5,7 +5,7 @@ set(EXE_NAME gracfl)
 set(LIB_NAME graCFLlib)
 
 # C++ Standard
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Default to Release build
