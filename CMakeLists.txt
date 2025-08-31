@@ -140,3 +140,6 @@ if(TARGET libTBB)
     add_dependencies(${EXE_NAME} libTBB)
 endif()
 
+# Add tests subdirectory
+add_subdirectory(tests)
+
